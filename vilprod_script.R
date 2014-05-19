@@ -206,4 +206,50 @@ ggplot(data=vilprod, aes(x=famprod, y=commerc, fill = famprod)) +
 
 ggsave(file="commerz_3.jpg", dpi=144)
 
+####################
+
+
+ggplot(data=vilprod, aes(x=price_ton/1000, y=price_ha/1000) ) + 
+    geom_point(aes(color = famprod), show_guide = F, 
+               size = 7, alpha = 1/2) +
+    geom_smooth(method=lm,   se=T) +
+    facet_wrap( ~ famprod, ncol=2) +
+    ggtitle("pricing differences") +
+     geom_text(aes(label=village), size=3) 
+
+
+ggplot(subset(vilprod, famprod=="Banana"),
+       aes(x=price_ton/1000, y=price_ha/1000) ) + 
+    geom_point(aes(color = famprod), show_guide = F, 
+               size = 7, alpha = 1/2) +
+    facet_wrap( ~ famprod, ncol=2) +
+    ggtitle("pricing differences") +
+    geom_text(aes(label=village), size=3) 
+
+ggplot(subset(vilprod, famprod=="Cana"),
+       aes(x=price_ton/1000, y=price_ha/1000) ) + 
+    geom_point(aes(color = famprod), show_guide = F, 
+               size = 7, alpha = 1/2) +
+    geom_smooth(method=lm,   se=T) +
+    facet_wrap( ~ famprod, ncol=2) +
+    ggtitle("pricing differences") +
+    geom_text(aes(label=village), size=3) 
+
+ggplot(subset(vilprod, famprod=="Cana"),
+       aes(x=log (price_ton), y=log(price_ha) )) + 
+    geom_point(aes(color = famprod), show_guide = F, 
+               size = 7, alpha = 1/2) +
+    geom_smooth(method=lm,   se=T) +
+    facet_wrap( ~ famprod, ncol=2) +
+    ggtitle("pricing differences") +
+    geom_text(aes(label=village), size=3)
+
+ggplot(subset(vilprod, famprod=="Graviola"),
+       aes(x=price_ton/1000, y=price_ha/1000) ) + 
+    geom_point(aes(color = famprod), show_guide = F, 
+               size = 7, alpha = 1/2) +
+    geom_smooth(method=lm,   se=T) +
+    facet_wrap( ~ famprod, ncol=2) +
+    ggtitle("pricing differences") +
+    geom_text(aes(label=village), size=3) 
 
