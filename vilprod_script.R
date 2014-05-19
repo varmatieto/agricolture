@@ -35,16 +35,11 @@ fix (vilprod)
 
 vilprod[vilprod$famprod=="Banana",]
 
-levels(vilprod$village)<-LETTERS[1:11]
 levels(vilprod$type)<-c("new","old")
 
 vilprod<-vilprod[order(vilprod$type),]
 
 table(type,famprod)
-
-# "aguafria"      "bomjesus"      "cousta_do" "itabaiana"    
-# "javari"        "junco"         "lemos"         "mangibura"    
-# "massnangana"   "melos"         "samba"        
 
 ####### DIVERSIFICATION 
 
