@@ -3,7 +3,21 @@
 library (ggplot2)
 library (plyr)
 library(grid)
-# provare ad aggiungere dimensione della famiglia
+
+# define function to create multi-plot setup (nrow, ncol)
+
+vp.setup <- function(x,y){
+    # create a new layout with grid
+    grid.newpage()
+    # define viewports and assign it to grid layout
+    pushViewport(viewport(layout = grid.layout(x,y)))
+}
+# define function to easily access layout (row, col)
+vp.layout <- function(x,y){
+    viewport(layout.pos.row=x, layout.pos.col=y)
+}
+
+##########################################################
 
 vilprod<- read.table ("prod_village_plus.txt", header=T, 
                       dec=".")
@@ -12,11 +26,13 @@ str(vilprod)
 head(vilprod)
 colnames(vilprod)
 
-#  1] "village"   "fam_vil"   "famprod"   "type"      "area"      "quantity" 
-#  7] "unity"     "price"     "commerc"   "fammarket" "qta_ton"   "price_ton"
+#  1] "village"  "fam_vil" "famprod"   "type" "area" "quantity" 
+#  7] "unity"     "price"  "commerc"   "fammarket" "qta_ton"   "price_ton"
 #  13] "price_ha" 
 
 attach (vilprod)
+
+summary(vilprod$price_ha)
 
 levels(vilprod$village)<-LETTERS[1:11]
 levels(vilprod$type)<-c("new","old")
@@ -34,27 +50,64 @@ table(type,famprod)
 
 ####### DIVERSIFICATION 
 
-ggplot(data=vilprod, aes(famprod, fill = village)) + 
+p1<-ggplot(data=vilprod, aes(famprod, fill = village)) + 
     geom_bar() + 
-    ggtitle("frequency of product family") 
+    ggtitle("frequency of different products") 
 
-ggplot(data=vilprod, aes(village, fill = famprod)) + 
+p2<-ggplot(data=vilprod, aes(village, fill = famprod)) + 
     geom_bar(show_guide = F) + 
     facet_grid(famprod ~ .) +
-    ggtitle("frequency of product family in villages") 
+    ggtitle("frequency of products in villages") 
 
 
+jpeg("diversification.jpg",width = 600, height = 900, units = "px")
+
+vp.setup(2,1)
+# plot graphics into layout
+print(p1, vp=vp.layout(1,1))
+print(p2, vp=vp.layout(2,1))
+# print(p3, vp=vp.layout(3,1))
+# print(p4, vp=vp.layout(4,1))
+
+dev.off()
 
 
-ggplot(data=vilprod, aes(x=village, y=area, fill = type)) + 
+####### PRODUCTION
+
+
+p1<-ggplot(data=vilprod, aes(x=village, y=area, fill = type)) + 
     geom_bar(stat="identity") + 
 #    facet_grid(type ~ .) +
-    ggtitle("distrib areas per village per type") 
+    ggtitle("areas per village per type") 
 
-ggplot(data=vilprod, aes(x=village, y=qta_ton, fill = type)) + 
+p2<-ggplot(data=vilprod, aes(x=village, y=qta_ton, fill = type)) + 
     geom_bar(stat="identity") + 
     #    facet_grid(type ~ .) +
-    ggtitle("distrib qta_ton per village per type") 
+    ggtitle("qta_ton per village per type") 
+
+p3<-ggplot(data=vilprod, aes(x=village, y=area*price_ha/1000, fill = type)) + 
+    geom_bar(stat="identity") + 
+    ggtitle("tot_price per village per type") +
+    ylab("in MR$") 
+
+p4<-ggplot(data=vilprod, aes(x=village, y=qta_ton*price_ton/1000, fill = type)) + 
+    geom_bar(stat="identity") + 
+    #    facet_grid(type ~ .) +
+    ggtitle("tot_price per village per type") +
+    ylab("in MR$") 
+
+jpeg("production.jpg",width = 600, height = 900, units = "px")
+
+vp.setup(4,1)
+# plot graphics into layout
+print(p1, vp=vp.layout(1,1))
+print(p2, vp=vp.layout(2,1))
+print(p3, vp=vp.layout(3,1))
+print(p4, vp=vp.layout(4,1))
+
+dev.off()
+
+################ PRICES ########################################
 
 
 ggplot(data=vilprod, aes(x=famprod, y=price_ton, fill = type)) + 
@@ -72,6 +125,13 @@ ggplot(data=vilprod, aes(x=famprod, y=price_ha, fill = type)) +
 ggplot(data=vilprod, aes(x=famprod, y=price_ha, fill = fam_vil)) + 
     geom_boxplot() + 
     ggtitle("distrib price per ha per product") 
+
+
+
+
+
+
+
 
 ggplot(data=vilprod, aes(x=village, y=area, fill = type)) + 
     geom_boxplot() + 
