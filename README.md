@@ -1,9 +1,28 @@
-agricolture
+Agricolture
 ===========
-data contains crops productions in eleven rural villages.
 
-crops are divided in new and old, as a means to describe production set up in last years and ever since cultures.
+### Data
 
-for each village_crop information about area of production, quantity, price and commercialization means are provided.
+Data contains **crops productions** in eleven rural villages.
 
-some basic plots using ggplot2 are provided.
+Crops are divided in new and old, as a means to describe:
+
+
+- production set up in last years,
+
+- ever since cultures.
+
+For each village and crop information relates to:
+
+- area of production *(in h)*, 
+
+- quantity,
+
+- price, 
+
+- commercialization means.
+
+### Plots
+
+
+Some basic plots using **ggplot2** are provided.
